@@ -30,6 +30,7 @@ import Vue from 'vue';
 import Timer from './Timer.vue';
 import enemyAudio from '@/assets/enemykill.ogg';
 import allyAudio from '@/assets/allykill.ogg';
+import {Board} from '@/gamelogic/board.js'
  let BLACK = true;
  function defaultState()
  {
@@ -46,6 +47,7 @@ import allyAudio from '@/assets/allykill.ogg';
   });
   return{
     board: boardseed,
+    bord: new Board(),
     moving_queue: [],
     showModal: false,
     interval: null,
@@ -98,8 +100,10 @@ export default {
   {
     toggleMoves(piece=null)
     {
-      if (piece)
-        this.board = this.board.map((square) => piece.moves.includes(square.index) ?  {...square, move: piece.pos} : {...square, move: null});
+      if (piece){
+        let moves = piece.show_moves();
+        this.board = this.board.map((square) => moves.includes(square.index) ?  {...square, move: piece.pos} : {...square, move: null});
+      }
       else
         this.board = this.board.map((square) => {return {...square, move: null}});
     },
@@ -165,7 +169,6 @@ export default {
         this.moving_queue.push(movingObject);
       }
     },
-
     updateQueue()
     {
 
@@ -247,6 +250,4 @@ export default {
     box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.2);
     background-color: lightgrey;
   }
-
-
 </style>
