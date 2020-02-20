@@ -1,8 +1,8 @@
 <template>
   <div :class="activeClass" @click="showMoves()">
-    <Piece v-if="piece" :piece="piece"  :showMoves="showMoves" @finishedMoving="onFinishedMoving($event)"/>
+    <Piece v-if="piece" :piece="piece" :playerColor="color" :showMoves="showMoves" @finishedMoving="onFinishedMoving($event)"/>
     <transition name="bounce">
-      <div :class="moveClass" v-if="move !== null" @click.once="onMoveClicked(move, index)"></div>
+      <div :class="moveClass" v-if="move !== null" @click.once="onMoveClicked(move)"></div>
     </transition>
   </div>
 </template>
@@ -12,11 +12,12 @@ import Piece from '@/components/Piece.vue'
 export default {
   props:{
     index: Number,
-    move: Number,
+    move: Object,
     onMoveClicked: Function,
     piece: Object,
     showMoves: Function,
     onFinishedMoving: Function,
+    color: Boolean
   },
   components:{
     Piece
@@ -25,9 +26,14 @@ export default {
     activeClass()
     {
       if((this.index + parseInt((this.index) / 8) ) % 2)
-        return "chessboard__square";
+        if(this.color)
+          return "chessboard__square";
+        else
+          return "chessboard__square--alternate";
+      if(this.color)
+          return "chessboard__square--alternate";
       else
-        return "chessboard__square--alternate";
+          return "chessboard__square";
     },
     moveClass()
     {

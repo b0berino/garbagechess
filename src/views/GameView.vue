@@ -18,8 +18,8 @@ export default {
   .main-view{
     display: grid;
     grid-template:  repeat(12, 1fr), repeat(12, 1fr);
-    width: 40rem;
-    height: 40rem;
+    width: 100%;
+    height: 100%;
     margin: auto;
   }
 
